@@ -27,14 +27,18 @@ def load_data_use_brukerapi(data_path, idx=10, i=100, **kwargs):
             file_path = os.path.join(data_path, str(scan_i), "pdata", str(scan_idx), "2dseq")
             
             if os.path.exists(file_path):
-                dataset = Dataset(file_path)
-                data_array = dataset.data
-                shape_str = "x".join(map(str, data_array.shape))
-                file_name = f"{scan_i}_{shape_str}.npy"
-                save_path = os.path.join(output_path, file_name)
+                try:
+                    dataset = Dataset(file_path)
+                    data_array = dataset.data
+                    shape_str = "x".join(map(str, data_array.shape))
+                    file_name = f"{scan_i}_{shape_str}.npy"
+                    save_path = os.path.join(output_path, file_name)
                 
-                np.save(save_path, data_array)
-                print(f"Saved: {save_path}")
+                    np.save(save_path, data_array)
+                    print(f"Saved: {save_path}")
+                except Exception as e:
+                    print(f"Error loading {file_path}: {e}")
+                    continue
                 
                 
 
